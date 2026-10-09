@@ -88,7 +88,7 @@
 <script>
 var API = 'https://script.google.com/macros/s/AKfycbz3sVYa_36UKzYmHRuvtjUWgVDK3I8mdiILss21pb3l92SX8pOCuTIaw2N0A6zg8xnk/exec';
 var Q = new URLSearchParams(location.search);
-var DATA = {data: (/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') ? Q.get('d') : ''), usuario: '', cards: [], respostas: {}, dias: [], baseUrl: location.origin + location.pathname};
+var DATA = {data: ((/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') || /^[a-z][a-z0-9-]{1,30}$/.test(Q.get('d')||'')) ? Q.get('d') : ''), usuario: '', cards: [], respostas: {}, dias: [], baseUrl: location.origin + location.pathname};
 (function(){
   function slug(s){
     return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -135,6 +135,7 @@ function iniciar(){
   var DOW = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
   var MON = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
   function fmt(iso, longo){
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return 'Exercícios · ' + iso.replace(/-/g, ' ');
     var p = iso.split('-'), dt = new Date(Date.UTC(+p[0], +p[1]-1, +p[2], 12));
     var s = (+p[2]) + ' ' + MON[+p[1]-1] + ' ' + p[0];
     return longo ? DOW[dt.getUTCDay()] + ', ' + s : s;
@@ -156,7 +157,7 @@ function iniciar(){
     });
     box.appendChild(dots);
     box.appendChild(el('b', null, ok + ' de ' + DATA.cards.length + ' certas'));
-    box.appendChild(el('span', null, feitas < DATA.cards.length ? '· ' + (DATA.cards.length - feitas) + ' por responder' : '· dia concluído'));
+    box.appendChild(el('span', null, feitas < DATA.cards.length ? '· ' + (DATA.cards.length - feitas) + ' por responder' : (DATA.deck ? '· exercícios concluídos' : '· dia concluído')));
   }
 
   function card(c){
@@ -215,7 +216,7 @@ function iniciar(){
     state[c.n] = k;
     var w = document.getElementById('card-' + c.n); w._pintar(); renderScore();
     setTimeout(function(){ w.classList.add('flipped'); }, 380);
-    var ru = API + '?api=registrar&u=' + encodeURIComponent(DATA.usuario) + '&d=' + DATA.data + '&n=' + c.n + '&e=' + k;
+    var ru = API + '?api=registrar&u=' + encodeURIComponent(DATA.usuario) + '&d=' + encodeURIComponent(DATA.data) + '&n=' + c.n + '&e=' + k;
     fetch(ru).then(function(r){ return r.json(); }).then(function(x){ if (!x || x.ok === false) throw 0; })
       .catch(function(){ toast('Resposta não foi salva (sem conexão?)'); });
   }
@@ -223,7 +224,7 @@ function iniciar(){
   var box = document.getElementById('cards');
   if (!DATA.cards.length){
     var e = el('div','empty');
-    e.appendChild(el('div', null, DATA.data === DATA.hoje ? 'Os cartões de hoje ainda não chegaram. Eles saem às 9h.' : 'Não há cartões neste dia.'));
+    e.appendChild(el('div', null, DATA.data === DATA.hoje ? 'Os cartões de hoje ainda não chegaram. Eles saem às 9h.' : (DATA.deck ? 'Não há cartões neste baralho.' : 'Não há cartões neste dia.')));
     box.appendChild(e);
   } else DATA.cards.forEach(function(c){ box.appendChild(card(c)); });
   renderScore();
