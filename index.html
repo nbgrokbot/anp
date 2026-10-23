@@ -82,12 +82,28 @@
   <div class="score" id="score"></div>
   <div id="cards"></div>
   <details id="arch"><summary>Dias anteriores</summary><div class="days" id="days"></div></details>
-  <footer>Questões originais de treino (não oficiais da AVIXA) · ECO ANP · <span id="quem"></span> · <a href="#" id="trocar" style="color:inherit">trocar pessoa</a></footer>
+  <footer>Questões originais de treino (não oficiais da AVIXA) · ECO ANP · <span id="quem"></span> · <a href="#" id="trocar" style="color:inherit">trocar pessoa</a> · <a href="#" id="idioma" style="color:inherit"></a></footer>
 </div>
 <div class="toast" id="toast"></div>
 <script>
 var API = 'https://script.google.com/macros/s/AKfycbz3sVYa_36UKzYmHRuvtjUWgVDK3I8mdiILss21pb3l92SX8pOCuTIaw2N0A6zg8xnk/exec';
 var Q = new URLSearchParams(location.search);
+var LANG = ''; try { LANG = localStorage.getItem('anp_lang') || ''; } catch (e) {}
+if (LANG !== 'pt' && LANG !== 'es') LANG = '';
+var TX = {
+  pt: {load:'Carregando os cartões…', err:'Não consegui carregar os cartões. Verifique a conexão e recarregue a página.', intro:'Antes de responder, diga quem é você. Cada pessoa tem a própria aba de respostas.', name:'Seu nome', enter:'Entrar', lang:'Idioma das explicações:', pick:'Escolha o idioma das explicações (as perguntas ficam em inglês):', ex:'Exercícios', today:'Hoje', of:' de ', right:' certas', left:' por responder', deckdone:'· exercícios concluídos', daydone:'· dia concluído', seeans:'Ver resposta', hint:'Toque numa alternativa para virar o cartão', ok:'✓ Acertou!', bad:'✗ Não foi dessa vez', correct:'Resposta correta: ', mine:'Você marcou: ', dom:'Domínio: ', src:'Fonte: ', seeq:'Ver a pergunta', notsaved:'Resposta não foi salva (sem conexão?)', notyet:'Os cartões de hoje ainda não chegaram. Eles saem às 9h.', nodeck:'Não há cartões neste baralho.', noday:'Não há cartões neste dia.', back:'← Hoje', cards:' cartões', prev:'Dias anteriores', foot:'Questões originais de treino (não oficiais da AVIXA)', sw:'trocar pessoa', other:'Español',
+       dow:['domingo','segunda','terça','quarta','quinta','sexta','sábado'], mon:['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez']},
+  es: {load:'Cargando las tarjetas…', err:'No pude cargar las tarjetas. Revisa la conexión y recarga la página.', intro:'Antes de responder, dinos quién eres. Cada persona tiene su propia hoja de respuestas.', name:'Tu nombre', enter:'Entrar', lang:'Idioma de las explicaciones:', pick:'Elige el idioma de las explicaciones (las preguntas quedan en inglés):', ex:'Ejercicios', today:'Hoy', of:' de ', right:' correctas', left:' por responder', deckdone:'· ejercicios terminados', daydone:'· día terminado', seeans:'Ver respuesta', hint:'Toca una opción para voltear la tarjeta', ok:'✓ ¡Correcto!', bad:'✗ Esta vez no', correct:'Respuesta correcta: ', mine:'Marcaste: ', dom:'Dominio: ', src:'Fuente: ', seeq:'Ver la pregunta', notsaved:'La respuesta no se guardó (¿sin conexión?)', notyet:'Las tarjetas de hoy todavía no llegan. Salen a las 9h (hora de Brasilia).', nodeck:'No hay tarjetas en este mazo.', noday:'No hay tarjetas en este día.', back:'← Hoy', cards:' tarjetas', prev:'Días anteriores', foot:'Preguntas originales de práctica (no oficiales de AVIXA)', sw:'cambiar persona', other:'Português',
+       dow:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'], mon:['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']}
+};
+function T(k){ return TX[LANG || 'pt'][k]; }
+function aplicarRotulos(){
+  document.documentElement.lang = LANG === 'es' ? 'es' : 'pt-BR';
+  var f = document.querySelector('footer'); f.firstChild.nodeValue = T('foot') + ' · ECO ANP · ';
+  document.getElementById('trocar').textContent = T('sw');
+  document.getElementById('idioma').textContent = '🌐 ' + T('other');
+  document.querySelector('#arch summary').textContent = T('prev');
+}
 var DATA = {data: ((/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') || /^[a-z][a-z0-9-]{1,30}$/.test(Q.get('d')||'')) ? Q.get('d') : ''), usuario: '', cards: [], respostas: {}, dias: [], baseUrl: location.origin + location.pathname};
 (function(){
   function slug(s){
@@ -96,7 +112,7 @@ var DATA = {data: ((/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') || /^[a-z][a-z0-9
   }
   function mostrarErro(msg){ var w = document.getElementById('who'); w.style.display = 'block'; w.textContent = msg; }
   function carregar(u){
-    var w = document.getElementById('who'); w.style.display = 'block'; w.textContent = 'Carregando os cartões…';
+    var w = document.getElementById('who'); w.style.display = 'block'; w.textContent = T('load');
     var url = API + '?api=dados&u=' + encodeURIComponent(u) + (DATA.data ? '&d=' + DATA.data : '');
     fetch(url).then(function(r){ return r.json(); }).then(function(d){
       if (!d || d.ok === false) throw new Error(d && d.erro);
@@ -105,7 +121,20 @@ var DATA = {data: ((/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') || /^[a-z][a-z0-9
       document.getElementById('score').style.display = '';
       document.getElementById('cards').style.display = '';
       iniciar();
-    }).catch(function(){ mostrarErro('Não consegui carregar os cartões. Verifique a conexão e recarregue a página.'); });
+    }).catch(function(){ mostrarErro(T('err')); });
+  }
+  aplicarRotulos();
+  if (!LANG){
+    document.getElementById('score').style.display = 'none';
+    document.getElementById('cards').style.display = 'none';
+    var lw = document.getElementById('who'); lw.style.display = 'block';
+    lw.appendChild(document.createTextNode('Idioma das explicações / Idioma de las explicaciones'));
+    [['pt','Português'],['es','Español']].forEach(function(o){
+      var b = document.createElement('button'); b.className = 'btn' + (o[0] === 'es' ? ' ghost' : ''); b.type = 'button'; b.textContent = o[1];
+      b.addEventListener('click', function(){ try { localStorage.setItem('anp_lang', o[0]); } catch (e) {} location.reload(); });
+      lw.appendChild(b);
+    });
+    return;
   }
   var salvo = '';
   try { salvo = slug(localStorage.getItem('anp_user') || ''); } catch (e) {}
@@ -114,11 +143,11 @@ var DATA = {data: ((/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') || /^[a-z][a-z0-9
   document.getElementById('cards').style.display = 'none';
   if (salvo){ carregar(salvo); return; }
   var who = document.getElementById('who'); who.style.display = 'block';
-  who.appendChild(document.createTextNode('Antes de responder, diga quem é você. Cada pessoa tem a própria aba de respostas.'));
+  who.appendChild(document.createTextNode(T('intro')));
   var f = document.createElement('form'); f.style.marginTop = '12px';
-  var inp = document.createElement('input'); inp.placeholder = 'Seu nome'; inp.maxLength = 24; inp.required = true;
+  var inp = document.createElement('input'); inp.placeholder = T('name'); inp.maxLength = 24; inp.required = true;
   inp.style.cssText = 'width:100%;font:inherit;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--opt);color:inherit';
-  var go = document.createElement('button'); go.className = 'btn'; go.textContent = 'Entrar'; go.type = 'submit';
+  var go = document.createElement('button'); go.className = 'btn'; go.textContent = T('enter'); go.type = 'submit';
   f.appendChild(inp); f.appendChild(go); who.appendChild(f);
   f.addEventListener('submit', function(ev){
     ev.preventDefault();
@@ -132,10 +161,9 @@ function iniciar(){
   var L = ['a','b','c','d'];
   var state = {}; // n -> escolhida
   Object.keys(DATA.respostas || {}).forEach(function(k){ state[k] = DATA.respostas[k]; });
-  var DOW = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
-  var MON = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var DOW = T('dow'), MON = T('mon');
   function fmt(iso, longo){
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return 'Exercícios · ' + iso.replace(/-/g, ' ');
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return T('ex') + ' · ' + iso.replace(/-/g, ' ');
     var p = iso.split('-'), dt = new Date(Date.UTC(+p[0], +p[1]-1, +p[2], 12));
     var s = (+p[2]) + ' ' + MON[+p[1]-1] + ' ' + p[0];
     return longo ? DOW[dt.getUTCDay()] + ', ' + s : s;
@@ -144,7 +172,7 @@ function iniciar(){
   function link(d){ return (DATA.baseUrl || '') + '?d=' + d; }
   function toast(msg){ var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2600); }
 
-  document.getElementById('date').textContent = (DATA.data === DATA.hoje ? 'Hoje · ' : '') + fmt(DATA.data, true);
+  document.getElementById('date').textContent = (DATA.data === DATA.hoje ? T('today') + ' · ' : '') + fmt(DATA.data, true);
   document.getElementById('quem').textContent = DATA.usuario;
 
   function renderScore(){
@@ -156,8 +184,8 @@ function iniciar(){
       dots.appendChild(d);
     });
     box.appendChild(dots);
-    box.appendChild(el('b', null, ok + ' de ' + DATA.cards.length + ' certas'));
-    box.appendChild(el('span', null, feitas < DATA.cards.length ? '· ' + (DATA.cards.length - feitas) + ' por responder' : (DATA.deck ? '· exercícios concluídos' : '· dia concluído')));
+    box.appendChild(el('b', null, ok + T('of') + DATA.cards.length + T('right')));
+    box.appendChild(el('span', null, feitas < DATA.cards.length ? '· ' + (DATA.cards.length - feitas) + T('left') : (DATA.deck ? T('deckdone') : T('daydone'))));
   }
 
   function card(c){
@@ -176,10 +204,10 @@ function iniciar(){
       b.addEventListener('click', function(){ escolher(c, k); });
       btns[k] = b; front.appendChild(b);
     });
-    var again = el('button','btn ghost','Ver resposta'); again.style.display = 'none';
+    var again = el('button','btn ghost',T('seeans')); again.style.display = 'none';
     again.addEventListener('click', function(){ wrap.classList.add('flipped'); });
     front.appendChild(again);
-    front.appendChild(el('p','hint','Toque numa alternativa para virar o cartão'));
+    front.appendChild(el('p','hint',T('hint')));
 
     function pintar(){
       var s = state[c.n]; if (!s) return;
@@ -193,17 +221,17 @@ function iniciar(){
       var acertou = s === c.correta;
       var top2 = el('div','top'); top2.appendChild(el('span','chip', c.task.split(' ')[0])); top2.appendChild(el('span','num', c.n + '/' + DATA.cards.length));
       back.appendChild(top2);
-      back.appendChild(el('div','verdict ' + (acertou ? 'ok' : 'bad'), acertou ? '✓ Acertou!' : '✗ Não foi dessa vez'));
-      var a = el('div','ans'); a.appendChild(el('small', null, 'Resposta correta: ' + c.correta));
+      back.appendChild(el('div','verdict ' + (acertou ? 'ok' : 'bad'), acertou ? T('ok') : T('bad')));
+      var a = el('div','ans'); a.appendChild(el('small', null, T('correct') + c.correta));
       a.appendChild(document.createTextNode(c.opcoes[c.correta])); back.appendChild(a);
-      if (!acertou){ var m = el('div','ans mine'); m.appendChild(el('small', null, 'Você marcou: ' + s)); m.appendChild(document.createTextNode(c.opcoes[s])); back.appendChild(m); }
-      back.appendChild(el('div','exp', c.explicacao));
+      if (!acertou){ var m = el('div','ans mine'); m.appendChild(el('small', null, T('mine') + s)); m.appendChild(document.createTextNode(c.opcoes[s])); back.appendChild(m); }
+      back.appendChild(el('div','exp', (LANG === 'es' && c.explicacao_es) ? c.explicacao_es : c.explicacao));
       var meta = el('div','meta');
-      meta.appendChild(el('div', null, 'Domínio: ' + c.dominio));
+      meta.appendChild(el('div', null, T('dom') + c.dominio));
       meta.appendChild(el('div', null, 'Task: ' + c.task));
-      if (c.fonte) meta.appendChild(el('div', null, 'Fonte: ' + c.fonte));
+      if (c.fonte) meta.appendChild(el('div', null, T('src') + c.fonte));
       back.appendChild(meta);
-      var vb = el('button','btn','Ver a pergunta'); vb.addEventListener('click', function(){ wrap.classList.remove('flipped'); });
+      var vb = el('button','btn',T('seeq')); vb.addEventListener('click', function(){ wrap.classList.remove('flipped'); });
       back.appendChild(vb);
     }
     wrap._pintar = pintar;
@@ -218,29 +246,30 @@ function iniciar(){
     setTimeout(function(){ w.classList.add('flipped'); }, 380);
     var ru = API + '?api=registrar&u=' + encodeURIComponent(DATA.usuario) + '&d=' + encodeURIComponent(DATA.data) + '&n=' + c.n + '&e=' + k;
     fetch(ru).then(function(r){ return r.json(); }).then(function(x){ if (!x || x.ok === false) throw 0; })
-      .catch(function(){ toast('Resposta não foi salva (sem conexão?)'); });
+      .catch(function(){ toast(T('notsaved')); });
   }
 
   var box = document.getElementById('cards');
   if (!DATA.cards.length){
     var e = el('div','empty');
-    e.appendChild(el('div', null, DATA.data === DATA.hoje ? 'Os cartões de hoje ainda não chegaram. Eles saem às 9h.' : (DATA.deck ? 'Não há cartões neste baralho.' : 'Não há cartões neste dia.')));
+    e.appendChild(el('div', null, DATA.data === DATA.hoje ? T('notyet') : (DATA.deck ? T('nodeck') : T('noday'))));
     box.appendChild(e);
   } else DATA.cards.forEach(function(c){ box.appendChild(card(c)); });
   renderScore();
 
   var days = document.getElementById('days');
-  if (DATA.data !== DATA.hoje){ var h = el('a', null); h.href = DATA.baseUrl || '?'; h.appendChild(el('span', null, '← Hoje')); h.appendChild(el('span', null, fmt(DATA.hoje))); days.appendChild(h); }
+  if (DATA.data !== DATA.hoje){ var h = el('a', null); h.href = DATA.baseUrl || '?'; h.appendChild(el('span', null, T('back'))); h.appendChild(el('span', null, fmt(DATA.hoje))); days.appendChild(h); }
   (DATA.dias || []).forEach(function(d){
     var a = el('a', d.data === DATA.data ? 'cur' : null); a.href = link(d.data);
     a.appendChild(el('span', null, fmt(d.data, true)));
-    a.appendChild(el('span', null, d.feitas ? d.acertos + '/' + d.total + ' certas' : d.total + ' cartões'));
+    a.appendChild(el('span', null, d.feitas ? d.acertos + '/' + d.total + T('right') : d.total + T('cards')));
     days.appendChild(a);
   });
   if (!(DATA.dias || []).length) document.getElementById('arch').style.display = 'none';
 }
 })();
 </script>
-<script>document.getElementById('trocar').addEventListener('click',function(e){e.preventDefault();try{localStorage.removeItem('anp_user')}catch(x){}location.reload();});</script>
+<script>document.getElementById('trocar').addEventListener('click',function(e){e.preventDefault();try{localStorage.removeItem('anp_user')}catch(x){}location.reload();});
+document.getElementById('idioma').addEventListener('click',function(e){e.preventDefault();try{localStorage.setItem('anp_lang',LANG==='es'?'pt':'es')}catch(x){}location.reload();});</script>
 </body>
 </html>
