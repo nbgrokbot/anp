@@ -32,6 +32,11 @@
   .dot{width:12px;height:12px;border-radius:50%;background:var(--line)}
   .dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)}
   .score b{font-size:15px} .score span{color:var(--muted);font-size:14px}
+  .licao{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin:0 0 18px;font-size:17px}
+  .licao h2{font-size:19px;margin:6px 0 10px}
+  .licao p{margin:0 0 10px;white-space:pre-line}
+  .licao a{color:var(--accent);font-weight:600;word-break:break-word}
+  .licao .lbl{color:var(--muted);font-size:15px;margin-top:12px}
   .card{perspective:1400px;margin:0 0 18px}
   .inner{display:grid;transition:transform .6s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d;-webkit-transform-style:preserve-3d}
   .card.flipped .inner{transform:rotateY(180deg)}
@@ -81,6 +86,7 @@
   <div id="who" class="empty" style="display:none;margin-bottom:14px"></div>
   <div class="score" id="score"></div>
   <div id="cards"></div>
+  <div id="licao" lang="en"></div>
   <details id="arch"><summary>Dias anteriores</summary><div class="days" id="days"></div></details>
   <footer>Questões originais de treino (não oficiais da AVIXA) · ECO ANP · <span id="quem"></span> · <a href="#" id="trocar" style="color:inherit">trocar pessoa</a> · <a href="#" id="idioma" style="color:inherit"></a></footer>
 </div>
@@ -171,6 +177,21 @@ function iniciar(){
   function el(tag, cls, txt){ var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
   function link(d){ return (DATA.baseUrl || '') + '?d=' + d; }
   function toast(msg){ var t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2600); }
+
+  (function(){
+    var box = document.getElementById('licao'); box.innerHTML = ''; var L0 = DATA.licao;
+    if (!L0 || !L0.texto) { box.style.display = 'none'; return; }
+    var c = el('div','licao');
+    var top = el('div','top'); top.appendChild(el('span','chip', 'English lesson' + (L0.task ? ' · ' + L0.task : ''))); c.appendChild(top);
+    c.appendChild(el('h2', null, L0.titulo));
+    c.appendChild(el('p', null, L0.texto));
+    if (L0.video_url){
+      c.appendChild(el('div','lbl','\u25B6 Free video'));
+      var a = el('a', null, L0.video_titulo || L0.video_url); a.href = L0.video_url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      c.appendChild(a);
+    }
+    box.appendChild(c);
+  })();
 
   document.getElementById('date').textContent = (DATA.data === DATA.hoje ? T('today') + ' · ' : '') + fmt(DATA.data, true);
   document.getElementById('quem').textContent = DATA.usuario;
