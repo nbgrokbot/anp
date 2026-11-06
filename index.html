@@ -62,6 +62,7 @@
   .ans.mine{background:var(--bad-bg);border-color:var(--bad)}
   .ans small{display:block;font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
   .exp{font-size:16px;margin:12px 0}
+  .siglas{font-size:13px;color:var(--muted);margin:10px 0 0;line-height:1.45}
   .meta{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px;margin-top:6px}
   .meta div{margin:2px 0}
   .btn{display:block;width:100%;margin-top:14px;font:inherit;font-weight:600;font-size:16px;padding:13px;border-radius:14px;
@@ -246,7 +247,12 @@ function iniciar(){
       var a = el('div','ans'); a.appendChild(el('small', null, T('correct') + c.correta));
       a.appendChild(document.createTextNode(c.opcoes[c.correta])); back.appendChild(a);
       if (!acertou){ var m = el('div','ans mine'); m.appendChild(el('small', null, T('mine') + s)); m.appendChild(document.createTextNode(c.opcoes[s])); back.appendChild(m); }
-      back.appendChild(el('div','exp', (LANG === 'es' && c.explicacao_es) ? c.explicacao_es : c.explicacao));
+      var expTxt = (LANG === 'es' && c.explicacao_es) ? c.explicacao_es : c.explicacao;
+      var mSig = /(?:\n\s*\n|\n)(Siglas:\s*[\s\S]*)$/i.exec(expTxt);
+      if (mSig){
+        back.appendChild(el('div','exp', expTxt.slice(0, mSig.index).replace(/\s+$/,'')));
+        back.appendChild(el('div','siglas', mSig[1].replace(/^\s+/,'')));
+      } else back.appendChild(el('div','exp', expTxt));
       var meta = el('div','meta');
       meta.appendChild(el('div', null, T('dom') + c.dominio));
       meta.appendChild(el('div', null, 'Task: ' + c.task));
