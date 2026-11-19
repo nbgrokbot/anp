@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
+<meta name="author" content="NB ANP prep">
 <title>NB ANP prep · flipcards</title>
 <style>
   :root{
@@ -78,6 +79,8 @@
   .toast{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--ink);color:var(--bg);
     padding:10px 14px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .3s;pointer-events:none;max-width:90%}
   .toast.show{opacity:.92}
+  .lessons{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0 14px;margin-top:8px;font-weight:600;color:var(--ink);text-decoration:none;min-height:48px}
+  .lessons span:last-child{color:var(--muted);font-size:20px}
   footer{color:var(--muted);font-size:12px;text-align:center;margin-top:18px}
 </style>
 </head>
@@ -89,6 +92,7 @@
   <div id="cards"></div>
   <div id="licao" lang="en"></div>
   <details id="arch"><summary>Dias anteriores</summary><div class="days" id="days"></div></details>
+  <a class="lessons" id="licoesBtn" href="licoes/"><span id="licoesTxt">📚 Lições</span><span>›</span></a>
   <footer>Questões originais de treino (não oficiais da AVIXA) · ECO ANP · <span id="quem"></span> · <a href="#" id="trocar" style="color:inherit">trocar pessoa</a> · <a href="#" id="idioma" style="color:inherit"></a></footer>
 </div>
 <div class="toast" id="toast"></div>
@@ -98,9 +102,9 @@ var Q = new URLSearchParams(location.search);
 var LANG = ''; try { LANG = localStorage.getItem('anp_lang') || ''; } catch (e) {}
 if (LANG !== 'pt' && LANG !== 'es') LANG = '';
 var TX = {
-  pt: {load:'Carregando os cartões…', err:'Não consegui carregar os cartões. Verifique a conexão e recarregue a página.', intro:'Antes de responder, diga quem é você. Cada pessoa tem a própria aba de respostas.', name:'Seu nome', enter:'Entrar', lang:'Idioma das explicações:', pick:'Escolha o idioma das explicações (as perguntas ficam em inglês):', ex:'Exercícios', today:'Hoje', of:' de ', right:' certas', left:' por responder', deckdone:'· exercícios concluídos', daydone:'· dia concluído', seeans:'Ver resposta', hint:'Toque numa alternativa para virar o cartão', ok:'✓ Acertou!', bad:'✗ Não foi dessa vez', correct:'Resposta correta: ', mine:'Você marcou: ', dom:'Domínio: ', src:'Fonte: ', seeq:'Ver a pergunta', notsaved:'Resposta não foi salva (sem conexão?)', notyet:'Os cartões de hoje ainda não chegaram. Eles saem às 9h.', nodeck:'Não há cartões neste baralho.', noday:'Não há cartões neste dia.', back:'← Hoje', cards:' cartões', prev:'Dias anteriores', foot:'Questões originais de treino (não oficiais da AVIXA)', sw:'trocar pessoa', other:'Español',
+  pt: {load:'Carregando os cartões…', err:'Não consegui carregar os cartões. Verifique a conexão e recarregue a página.', intro:'Antes de responder, diga quem é você. Cada pessoa tem a própria aba de respostas.', name:'Seu nome', enter:'Entrar', lang:'Idioma das explicações:', pick:'Escolha o idioma das explicações (as perguntas ficam em inglês):', ex:'Exercícios', today:'Hoje', of:' de ', right:' certas', left:' por responder', deckdone:'· exercícios concluídos', daydone:'· dia concluído', seeans:'Ver resposta', hint:'Toque numa alternativa para virar o cartão', ok:'✓ Acertou!', bad:'✗ Não foi dessa vez', correct:'Resposta correta: ', mine:'Você marcou: ', dom:'Domínio: ', src:'Fonte: ', seeq:'Ver a pergunta', notsaved:'Resposta não foi salva (sem conexão?)', notyet:'Os cartões de hoje ainda não chegaram. Eles saem às 9h.', nodeck:'Não há cartões neste baralho.', noday:'Não há cartões neste dia.', back:'← Hoje', cards:' cartões', prev:'Dias anteriores', foot:'Questões originais de treino (não oficiais da AVIXA)', sw:'trocar pessoa', other:'Español', lessons:'📚 Lições',
        dow:['domingo','segunda','terça','quarta','quinta','sexta','sábado'], mon:['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez']},
-  es: {load:'Cargando las tarjetas…', err:'No pude cargar las tarjetas. Revisa la conexión y recarga la página.', intro:'Antes de responder, dinos quién eres. Cada persona tiene su propia hoja de respuestas.', name:'Tu nombre', enter:'Entrar', lang:'Idioma de las explicaciones:', pick:'Elige el idioma de las explicaciones (las preguntas quedan en inglés):', ex:'Ejercicios', today:'Hoy', of:' de ', right:' correctas', left:' por responder', deckdone:'· ejercicios terminados', daydone:'· día terminado', seeans:'Ver respuesta', hint:'Toca una opción para voltear la tarjeta', ok:'✓ ¡Correcto!', bad:'✗ Esta vez no', correct:'Respuesta correcta: ', mine:'Marcaste: ', dom:'Dominio: ', src:'Fuente: ', seeq:'Ver la pregunta', notsaved:'La respuesta no se guardó (¿sin conexión?)', notyet:'Las tarjetas de hoy todavía no llegan. Salen a las 9h (hora de Brasilia).', nodeck:'No hay tarjetas en este mazo.', noday:'No hay tarjetas en este día.', back:'← Hoy', cards:' tarjetas', prev:'Días anteriores', foot:'Preguntas originales de práctica (no oficiales de AVIXA)', sw:'cambiar persona', other:'Português',
+  es: {load:'Cargando las tarjetas…', err:'No pude cargar las tarjetas. Revisa la conexión y recarga la página.', intro:'Antes de responder, dinos quién eres. Cada persona tiene su propia hoja de respuestas.', name:'Tu nombre', enter:'Entrar', lang:'Idioma de las explicaciones:', pick:'Elige el idioma de las explicaciones (las preguntas quedan en inglés):', ex:'Ejercicios', today:'Hoy', of:' de ', right:' correctas', left:' por responder', deckdone:'· ejercicios terminados', daydone:'· día terminado', seeans:'Ver respuesta', hint:'Toca una opción para voltear la tarjeta', ok:'✓ ¡Correcto!', bad:'✗ Esta vez no', correct:'Respuesta correcta: ', mine:'Marcaste: ', dom:'Dominio: ', src:'Fuente: ', seeq:'Ver la pregunta', notsaved:'La respuesta no se guardó (¿sin conexión?)', notyet:'Las tarjetas de hoy todavía no llegan. Salen a las 9h (hora de Brasilia).', nodeck:'No hay tarjetas en este mazo.', noday:'No hay tarjetas en este día.', back:'← Hoy', cards:' tarjetas', prev:'Días anteriores', foot:'Preguntas originales de práctica (no oficiales de AVIXA)', sw:'cambiar persona', other:'Português', lessons:'📚 Lecciones',
        dow:['domingo','lunes','martes','miércoles','jueves','viernes','sábado'], mon:['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic']}
 };
 function T(k){ return TX[LANG || 'pt'][k]; }
@@ -110,6 +114,7 @@ function aplicarRotulos(){
   document.getElementById('trocar').textContent = T('sw');
   document.getElementById('idioma').textContent = '🌐 ' + T('other');
   document.querySelector('#arch summary').textContent = T('prev');
+  document.getElementById('licoesTxt').textContent = T('lessons');
 }
 var DATA = {data: ((/^\d{4}-\d{2}-\d{2}$/.test(Q.get('d')||'') || /^[a-z][a-z0-9-]{1,30}$/.test(Q.get('d')||'')) ? Q.get('d') : ''), usuario: '', cards: [], respostas: {}, dias: [], baseUrl: location.origin + location.pathname};
 (function(){

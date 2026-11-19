@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="NB ANP prep">
+<meta name="description" content="Lição NB ANP prep: PoE (Power over Ethernet) e PoE budget para o exame AVIXA ANP.">
+<title>NB ANP prep · PoE e PoE budget</title>
+<link rel="stylesheet" href="estilo.css">
+<script src="lang.js"></script>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1><a href="./">NB ANP prep</a></h1>
+  <nav class="nav">
+    <a href="./"><span data-l="pt">📚 Lições</span><span data-l="es">📚 Lecciones</span></a>
+    <a href="../"><span data-l="pt">🃏 Cards</span><span data-l="es">🃏 Tarjetas</span></a>
+    <a href="#" onclick="anpTrocarIdioma(event)"><span data-l="pt">🌐 Español</span><span data-l="es">🌐 Português</span></a>
+  </nav>
+</header>
+
+<!-- ====================================================== PT ====================================================== -->
+<div data-l="pt" lang="pt-BR">
+
+<div class="sec hero">
+  <span class="chip">Domínio B · Task B5</span><span class="chip">+ B4 · B3 · D3 · D4 · E2</span>
+  <h2>PoE (Power over Ethernet) e PoE budget</h2>
+  <p class="sub">Lição de 18/11/2026 · <span class="tag avixa">AVIXA</span> = vem do ECO ou do curso ANP Exam Review · <span class="tag">complemento</span> = vem de fora dos documentos AVIXA (norma IEEE, prática de mercado)</p>
+  <h3>Em 30 segundos</h3>
+  <ul>
+    <li>PoE manda energia DC e dados pelo mesmo cabo de par trançado, até os mesmos 100 m. Quem fornece é a <b>PSE</b> (Power Sourcing Equipment: switch ou injector). Quem consome é o <b>PD</b> (Powered Device: câmera, microfone, decoder…).</li>
+    <li>Os números que mais caem: <b>15,4 / 30 / 60 / 90 W na PSE</b> e <b>12,95 / 25,5 / 51 / 71,3 W no PD</b>. A diferença entre os dois é a perda no cabo.</li>
+    <li>O budget tem <b>dois limites</b>: o de cada porta e o total do switch. Os dois têm de fechar, com a folga do curso: o switch deve entregar <b>120%</b> do necessário. O curso também diz para não passar de <b>80%</b> da capacidade, o que é um pouco mais conservador (1 ÷ 0,8 = 125%).</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>1. Onde o PoE aparece no ECO</h2>
+  <div class="tblw"><table>
+    <tr><th>Task</th><th>O que o ECO diz</th><th>Ligação com PoE</th></tr>
+    <tr><td><b>B5</b> (3 itens)</td><td>Verify Power over Ethernet (PoE) class is budgeted correctly</td><td>É a task do PoE: classe de cada PD, soma, budget do switch. <span class="tag avixa">AVIXA</span></td></tr>
+    <tr><td><b>B4</b> (3)</td><td>Environmental (noise, BTU, location, space) and power (amperage, voltage, grounding) needs</td><td>O curso põe aqui o aquecimento dos feixes de cabo com PoE e as tabelas de ampacidade do NEC (National Electrical Code). <span class="tag avixa">AVIXA</span></td></tr>
+    <tr><td><b>B3</b> (3)</td><td>Switch and distribution architecture meets bandwidth needs (cabling, stacking, transceivers, port count…)</td><td>O exemplo do curso conta watts <b>e</b> portas (16 portas). Nossa leitura do ECO.</td></tr>
+    <tr><td><b>D3</b> (3)</td><td>Deploy switches, routers and other network devices (power on, firmware, configure, cable management)</td><td>Configurar PoE no switch: prioridade de portas, modo de alocação, LLDP. Nossa leitura do ECO.</td></tr>
+    <tr><td><b>D4</b> (3)</td><td>Deploy AV end-point devices (power on, firmware, configure)</td><td>Ligar os PDs e conferir se cada um recebeu a classe certa. Nossa leitura do ECO.</td></tr>
+    <tr><td><b>E2</b> (4)</td><td>Verify system stability over time and load conditions</td><td>Testar com tudo ligado e no pico (PTZ girando, alto-falante alto). Nossa leitura do ECO.</td></tr>
+  </table></div>
+  <p class="note">No CTS-D JTA, que é outra certificação, aparece "ability to calculate bandwidth and PoE requirements". Serve só de reforço. <span class="tag">complemento</span></p>
+</div>
+
+<div class="box memo">
+  <h2>🧠 Truques de memória</h2>
+  <ul>
+    <li><b>"15 – 30 – 60 – 90"</b> na PSE: dobra, dobra, soma 30. Igual aos minutos de um jogo que vai ficando mais longo.</li>
+    <li><b>"13 – 25 – 51 – 71"</b> no PD (12,95 arredonda para 13). Pense "treze, vinte e cinco, cinquenta e um, setenta e um", uma senha de cadeado.</li>
+    <li><b>af → at → bt</b> segue o alfabeto e a cronologia: 2003, 2009, 2018. E os Types contam as gerações: <b>Type 1 = af, Type 2 = at, Types 3 e 4 = bt</b>.</li>
+    <li><b>"3 – 4 – 8"</b>: o af vai até a Class 3, o at chega à Class 4 e o bt vai até a Class 8.</li>
+    <li><b>PSE Supplies, PD Drinks</b>: a PSE serve e o PD bebe.</li>
+    <li><b>"Diz Como Liga"</b>: <b>D</b>etecção → <b>C</b>lassificação → <b>L</b>iga. É a ordem em que a PSE decide dar energia.</li>
+    <li><b>Regra 120/80</b> do curso: o switch precisa de 120% do que você calculou, e a carga não deve passar de 80% do budget. Se a questão disser qual das duas usar, use aquela. Se quiser a mais segura, use a de 80%.</li>
+    <li><b>Perda = I²R</b>: 0,35 A² × 20 Ω = <b>2,45 W</b> = 15,4 − 12,95. E 0,6 A² × 12,5 Ω = <b>4,5 W</b> = 30 − 25,5. A diferença entre PSE e PD é exatamente a perda no pior cabo de 100 m.</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>2. As normas IEEE 802.3</h2>
+  <p>PoE é uma família de normas IEEE do guarda-chuva 802.3, desde 2003. Ela leva energia junto com os dados num cabo de 4 pares trançados. <span class="tag avixa">AVIXA</span></p>
+  <div class="tblw"><table>
+    <tr><th>Norma</th><th>Type</th><th>Apelido</th><th>Pares</th><th>Classes</th><th class="n">PSE</th><th class="n">PD</th><th class="n">Corrente</th></tr>
+    <tr><td>802.3af (2003)</td><td>1</td><td>PoE</td><td>2</td><td>0–3</td><td class="n">15,4 W</td><td class="n">12,95 W</td><td class="n">350 mA</td></tr>
+    <tr><td>802.3at (2009)</td><td>2</td><td>PoE+</td><td>2</td><td>0–4</td><td class="n">30 W</td><td class="n">25,5 W</td><td class="n">600 mA</td></tr>
+    <tr><td>802.3bt (2018)</td><td>3</td><td>PoE++ / 4PPoE</td><td>2 ou 4</td><td>0–6</td><td class="n">60 W</td><td class="n">51 W</td><td class="n">600 mA/par</td></tr>
+    <tr><td>802.3bt (2018)</td><td>4</td><td>PoE++ / 4PPoE</td><td>4</td><td>7–8</td><td class="n">90 W</td><td class="n">71,3 W</td><td class="n">~960 mA/par</td></tr>
+  </table></div>
+  <p class="note">⚠️ A tabela do curso traz <b>24,5 W</b> no PD para o Type 2 e <b>99 W / 73 W</b> para o Type 4. A norma IEEE publica <b>25,5 W</b> e <b>90 W / 71,3 W</b>, e são esses os números que usamos aqui. Se a prova trouxer 99 W ou 73 W, saiba que é a versão do curso para o Type 4. Tensão na PSE: 44–57 V DC (af), 50–57 V (at e bt Type 3), 52–57 V (bt Type 4). <span class="tag avixa">curso</span> <span class="tag">complemento IEEE</span></p>
+
+  <h3>Classes 0 a 8</h3>
+  <p>A classe é a "etiqueta de consumo" que o PD anuncia. É ela que a task B5 manda orçar. <span class="tag">complemento (valores IEEE)</span></p>
+  <div class="tblw"><table>
+    <tr><th>Class</th><th class="n">Reserva na PSE</th><th class="n">Máximo no PD</th><th>Type mínimo</th></tr>
+    <tr><td>0 (padrão, sem classe)</td><td class="n">15,4 W</td><td class="n">12,95 W</td><td>1 (af)</td></tr>
+    <tr><td>1</td><td class="n">4,0 W</td><td class="n">3,84 W</td><td>1 (af)</td></tr>
+    <tr><td>2</td><td class="n">7,0 W</td><td class="n">6,49 W</td><td>1 (af)</td></tr>
+    <tr><td>3</td><td class="n">15,4 W</td><td class="n">12,95 W</td><td>1 (af)</td></tr>
+    <tr><td>4</td><td class="n">30 W</td><td class="n">25,5 W</td><td>2 (at)</td></tr>
+    <tr><td>5</td><td class="n">45 W</td><td class="n">40 W</td><td>3 (bt, 4 pares)</td></tr>
+    <tr><td>6</td><td class="n">60 W</td><td class="n">51 W</td><td>3 (bt, 4 pares)</td></tr>
+    <tr><td>7</td><td class="n">75 W</td><td class="n">62 W</td><td>4 (bt)</td></tr>
+    <tr><td>8</td><td class="n">90 W</td><td class="n">71,3 W</td><td>4 (bt)</td></tr>
+  </table></div>
+  <p class="note">Pegadinha clássica: a <b>Class 0</b> reserva os mesmos 15,4 W da Class 3. Um PD que não se classifica custa caro no budget por classe.</p>
+</div>
+
+<div class="sec">
+  <h2>3. Quem é quem: PSE, PD, endspan, midspan, modos</h2>
+  <ul>
+    <li><b>PSE (Power Sourcing Equipment)</b> fornece a energia. A norma também define a sinalização entre PSE e PD, que serve para detectar o equipamento certo nas duas pontas e negociar quanta energia entregar. <span class="tag avixa">AVIXA</span></li>
+    <li><b>PD (Powered Device)</b> recebe a energia: câmera, microfone de teto, encoder, touch panel etc.</li>
+    <li><b>Endspan</b> é o próprio switch PoE, onde a energia já sai da porta. <b>Midspan</b> é o injector (ou painel de injectors) entre um switch sem PoE e o PD. O curso fala em "switch/midspan" no cálculo do budget, então o midspan tem budget próprio. Ele precisa acompanhar a velocidade do link: um midspan de 100 Mb/s num link gigabit derruba a velocidade. <span class="tag">complemento</span></li>
+    <li><b>Três formas de levar a energia</b>, segundo o curso: (1) nos 2 pares que também levam dados, (2) nos 2 pares livres, (3) <b>4PPoE</b>, nos 4 pares, que também levam dados. No Cat6 a 1 Gb/s os 4 pares levam dados. O curso chama a opção de 4 pares de "Mode C" e diz que é a mais comum nos switches atuais. <span class="tag avixa">AVIXA</span></li>
+    <li>Na norma IEEE os nomes são <b>Alternative A</b> (pares 1-2 e 3-6, chamado "Mode A") e <b>Alternative B</b> (pares 4-5 e 7-8, "Mode B"). Quatro pares é usar A e B juntos. Um PD af/at tem de aceitar A <b>e</b> B, porque não sabe qual a PSE vai usar. <span class="tag">complemento</span></li>
+    <li>Com 4 pares a corrente se divide: para a mesma potência, cada par aquece menos. Isso conta para o calor nos feixes (seção 5). <span class="tag">complemento</span></li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>4. Como a PSE decide ligar: "Diz Como Liga"</h2>
+  <ol>
+    <li><b>Detecção</b>: a PSE aplica uma tensão baixa (2,7–10,1 V) e procura a "assinatura" de 25 kΩ do PD. Sem assinatura, não há energia. É isso que impede o PoE padrão de queimar um notebook ligado na porta. <span class="tag">complemento</span></li>
+    <li><b>Classificação</b>: com 15,5–20,5 V, a PSE mede a corrente de classe e descobre a Class do PD. A partir do at, a classificação tem vários "toques" (multi-event classification), para o PD saber que está numa PSE de alta potência. <span class="tag">complemento</span></li>
+    <li><b>Liga</b> (power-up) e <b>mantém</b>: o PD precisa consumir um mínimo (MPS, Maintain Power Signature). Se ele some, a PSE corta a energia da porta. <span class="tag">complemento</span></li>
+    <li><b>LLDP (Link Layer Discovery Protocol)</b>: com o link de dados no ar, PD e PSE podem renegociar a potência em passos de 0,1 W (o TLV "Power via MDI"; em telefones IP aparece como LLDP-MED, LLDP Media Endpoint Discovery). Com isso o switch reserva o que o PD <b>pede</b>, e não o máximo da classe. Um PD Class 4 que pede 14 W via LLDP libera 16 W para os outros. <span class="tag">complemento</span></li>
+  </ol>
+  <p class="note">O curso resume tudo isso numa frase: a sinalização PSE/PD permite detectar o equipamento certo e negociar a potência. <span class="tag avixa">AVIXA</span></p>
+</div>
+
+<div class="sec">
+  <h2>5. Cabo, perda e calor</h2>
+  <ul>
+    <li><b>O limite continua de 100 m.</b> PoE não aumenta distância nenhuma (extensores PoE são outro equipamento no meio).</li>
+    <li><b>Por que a PSE entrega mais que o PD recebe:</b> a resistência do cabo transforma parte da potência em calor. A norma prevê o pior caso, com 100 m e resistência de laço de 20 Ω (af) ou 12,5 Ω (at). O curso dá a perda máxima no cabo: <b>2,45 W</b> (af), <b>4,5 W</b> (at), <b>9 W</b> (bt Type 3) e 8–25 W (bt Type 4, nos números do curso). <span class="tag avixa">AVIXA</span></li>
+    <li><b>Feixes (bundles):</b> em instalação grande, considere o aquecimento dos feixes e a qualidade do cabo, e consulte o fabricante do cabo e as tabelas de ampacidade do NEC. <span class="tag avixa">AVIXA</span></li>
+    <li>O porquê: os cabos do meio de um feixe grande não dissipam calor. Quando a temperatura sobe, a resistência sobe, a perda aumenta e o cabo pode passar da temperatura nominal. A orientação de mercado (TIA TSB-184-A) é preferir Cat6A (condutor 23 AWG, mais grosso), fazer feixes menores e mais soltos e <b>fugir de CCA</b> (Copper-Clad Aluminum, alumínio cobreado), que esquenta mais e nem é cabo de categoria de verdade. <span class="tag">complemento</span></li>
+    <li>Tirar um patch cord com carga alta faz um pequeno arco nos contatos. Em PoE de alta potência, use conectores e patch cords de qualidade. <span class="tag">complemento</span></li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>6. PoE budget: o cálculo</h2>
+  <h3>Dois limites, sempre</h3>
+  <ul>
+    <li><b>Por porta:</b> a porta tem de suportar o Type e a Class do PD. Uma porta PoE+ (30 W) não liga uma câmera Class 6, por mais budget que o switch tenha sobrando.</li>
+    <li><b>Total:</b> é a soma que a fonte do switch aguenta. "370 W em 24 portas" não quer dizer 30 W em cada porta: dá uma média de <b>15,4 W</b> por porta.</li>
+  </ul>
+  <h3>O passo a passo do curso <span class="tag avixa">AVIXA</span></h3>
+  <ol>
+    <li>Ache o consumo de cada equipamento no spec sheet ou na caixa. Se vier em volts e ampères, P = V × I.</li>
+    <li>Some tudo: esse é o seu PoE budget.</li>
+    <li>Conte as portas.</li>
+    <li>Especifique um switch (ou midspan) com portas suficientes e capaz de entregar <b>120%</b> do budget, para operar com segurança. Na introdução do mesmo tópico, o curso diz para a carga não passar de 80% da capacidade do switch/midspan.</li>
+  </ol>
+  <p>O exemplo do curso: decoder 48 V × 140 mA = 6,72 W e encoder 48 V × 185 mA = 8,88 W. Com 4 encoders (35,5 W) e 12 decoders (80,6 W), o total é <b>116,1 W</b> em <b>16 portas</b>. Com a folga de 20%, o switch precisa de ≥ <b>139,3 W</b> de budget e ≥ 16 portas PoE.</p>
+  <h3>Como o switch reserva a energia <span class="tag">complemento</span></h3>
+  <div class="tblw"><table>
+    <tr><th>Modo</th><th>O que reserva</th><th>Efeito</th></tr>
+    <tr><td><b>Por classe</b> (class-based / static)</td><td>O máximo da classe na PSE (Class 3 = 15,4 W, mesmo que o PD use 7 W)</td><td>Mais seguro e mais "caro": cabem menos PDs</td></tr>
+    <tr><td><b>Por LLDP</b></td><td>O que o PD pede via LLDP</td><td>Meio-termo preciso, se o PD e o switch suportarem</td></tr>
+    <tr><td><b>Por consumo real</b> (usage-based / dynamic)</td><td>O que o switch mede agora</td><td>Cabe mais, mas um pico (PTZ girando, aquecedor ligando, volume alto) pode estourar</td></tr>
+  </table></div>
+  <p>Para o projeto, some pelo máximo do spec sheet (método do curso) ou, mais conservador, pelo máximo da classe. O consumo medido é bom para conferir, mas não para projetar.</p>
+  <h3>Prioridade de portas e estouro do budget <span class="tag">complemento</span></h3>
+  <ul>
+    <li>Quando a demanda passa do budget, o switch nega energia à porta nova ou <b>derruba as de menor prioridade</b> (critical > high > low). Em empate, muitos fabricantes sacrificam a porta de número maior. Isso varia, então confira o manual.</li>
+    <li>Sintomas: PD que não liga, PD que reinicia em loop, ou um PD que cai quando outro puxa mais. No log aparece algo como "power denied" ou "budget exceeded".</li>
+    <li>Ponha em prioridade alta o que derruba a sala: microfones, DSP, câmeras da sala principal. Sinalização, telefones de corredor e APs (access points) de área comum vão em prioridade baixa.</li>
+  </ul>
+  <h3>Fonte redundante e UPS <span class="tag">complemento</span></h3>
+  <ul>
+    <li>Com duas fontes, muitos switches têm dois modos. No <b>redundante</b> (N+1), o budget é o de uma fonte só. No <b>combinado</b> (load-sharing), o budget é a soma das duas, mas sem redundância. Se uma fonte cai no modo combinado, o budget cai pela metade e as portas de baixa prioridade se apagam.</li>
+    <li>Os PDs caem junto com o switch. O switch PoE vai no <b>UPS</b> (Uninterruptible Power Supply), e o UPS é dimensionado com a carga PoE incluída, já que ela aparece no consumo AC do switch, somada às perdas da fonte. Isso se liga a B4 (power needs) e a D1 (site readiness: energia).</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>7. PoE passivo e não padrão <span class="tag">complemento</span></h2>
+  <ul>
+    <li><b>PoE passivo</b> (24 V ou 48 V "sempre ligado") não tem detecção nem classificação. A tensão está sempre na porta e pode danificar um equipamento comum. Ele também não negocia nem entra no budget por classe ou LLDP.</li>
+    <li>Há soluções proprietárias de antes do bt, como os 60 W da Cisco UPOE (Universal PoE). O PoH (Power over HDBaseT) é outra família, usada em extensores HDBaseT. Não confunda nenhuma delas com o 802.3bt.</li>
+    <li>Na prova e no projeto, a resposta segura é o <b>padrão IEEE 802.3af/at/bt</b>, com PSE e PD conversando.</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>8. PoE no mundo AV <span class="tag">complemento: valores típicos; vale sempre o spec sheet</span></h2>
+  <div class="tblw"><table>
+    <tr><th>Equipamento</th><th>Faixa típica</th><th>Atenção</th></tr>
+    <tr><td>Câmera PTZ indoor</td><td>PoE+ (Class 4), 15–25 W</td><td>Os motores dão picos. Algumas pedem bt.</td></tr>
+    <tr><td>Câmera PTZ outdoor com aquecedor</td><td>802.3bt (Class 6 ou mais)</td><td>Exige porta bt. Um PoE+ não resolve.</td></tr>
+    <tr><td>Microfone de teto (array)</td><td>af ou at, 5–13 W</td><td>Prioridade alta: sem ele a reunião acaba.</td></tr>
+    <tr><td>Encoder/decoder AV-over-IP</td><td>6–13 W (curso: 8,88 e 6,72 W)</td><td>Os modelos 4K/10G costumam pedir PoE+ ou fonte local.</td></tr>
+    <tr><td>Touch panel</td><td>af ou at, 8–20 W</td><td>Telas maiores puxam mais.</td></tr>
+    <tr><td>DSP / interface de áudio em rede com PoE</td><td>af ou at, 5–15 W</td><td>Centro do sistema: prioridade critical.</td></tr>
+    <tr><td>Alto-falante PoE</td><td>PoE+ ou bt</td><td>Volume alto e graves são os picos. Projete pelo máximo.</td></tr>
+    <tr><td>Display ou sinalização PoE</td><td>bt Type 4</td><td>Uma porta de 90 W por tela.</td></tr>
+  </table></div>
+</div>
+
+<div class="sec">
+  <h2>9. Exercício resolvido</h2>
+  <p><b>Cenário:</b> uma sala de treinamento ligada a <b>um switch de 24 portas, todas PoE+</b>, com <b>370 W</b> de PoE budget. Valores tirados do spec sheet de cada PD (fictícios, só para o exercício):</p>
+  <div class="tblw"><table>
+    <tr><th>Equipamento</th><th class="n">Qtd</th><th>Class</th><th class="n">Spec (máx.)</th><th class="n">Soma spec</th><th class="n">Reserva por classe</th></tr>
+    <tr><td>Câmera PTZ</td><td class="n">2</td><td>4</td><td class="n">24 W</td><td class="n">48,0 W</td><td class="n">2 × 30 = 60,0 W</td></tr>
+    <tr><td>Microfone de teto</td><td class="n">4</td><td>3</td><td class="n">10 W</td><td class="n">40,0 W</td><td class="n">4 × 15,4 = 61,6 W</td></tr>
+    <tr><td>Encoder AV-over-IP</td><td class="n">4</td><td>3</td><td class="n">8,9 W</td><td class="n">35,6 W</td><td class="n">4 × 15,4 = 61,6 W</td></tr>
+    <tr><td>Decoder AV-over-IP</td><td class="n">8</td><td>3</td><td class="n">6,7 W</td><td class="n">53,6 W</td><td class="n">8 × 15,4 = 123,2 W</td></tr>
+    <tr><td>Touch panel</td><td class="n">2</td><td>4</td><td class="n">18 W</td><td class="n">36,0 W</td><td class="n">2 × 30 = 60,0 W</td></tr>
+    <tr><td>Alto-falante PoE</td><td class="n">2</td><td>4</td><td class="n">25,5 W</td><td class="n">51,0 W</td><td class="n">2 × 30 = 60,0 W</td></tr>
+    <tr class="tot"><td>Total</td><td class="n">22</td><td></td><td></td><td class="n">264,2 W</td><td class="n">426,4 W</td></tr>
+  </table></div>
+  <ol>
+    <li><b>Portas:</b> 22 ≤ 24 <span class="ok">✓</span></li>
+    <li><b>Por porta:</b> nenhum PD passa da Class 4, então todas as portas PoE+ servem <span class="ok">✓</span></li>
+    <li><b>Total pelo método do curso:</b> 264,2 W × 1,2 = <b>317,0 W ≤ 370 W</b> <span class="ok">✓</span>. A carga fica em 264,2 / 370 = <b>71%</b> do budget, abaixo dos 80%.</li>
+    <li><b>Mas, se o switch reservar por classe:</b> 426,4 W &gt; 370 W <span class="bad">✗</span>. Faltam 56,4 W. O switch liga as portas até esgotar a reserva, e as últimas (ou as de menor prioridade) ficam sem energia. Seriam uns 4 PDs Class 3 apagados, por exemplo decoders.</li>
+  </ol>
+  <p><b>Veredito:</b> <span class="ok">cabe</span>, desde que o switch use alocação por LLDP ou por consumo real e tenha as prioridades configuradas. Se o switch só aloca por classe, <span class="bad">não cabe</span>. Aí as saídas são um switch de 740 W, dividir os PDs em dois switches ou um midspan para parte deles.</p>
+  <p><b>Variação de prova:</b> trocando as 2 PTZ por modelos outdoor Class 6 (51 W), o total por spec sobe para 318,2 W (× 1,2 = 381,8 W, já acima dos 370 W), mas o erro mais grave vem antes: <b>uma porta PoE+ não entrega Class 6</b>. Falha o limite por porta antes do total.</p>
+</div>
+
+<div class="box prova">
+  <h2>🎯 Para a prova</h2>
+  <ul>
+    <li>Ao ler "budgeted correctly" (B5), pense em <b>somar a classe ou o consumo de todos os PDs e comparar com o budget total da PSE</b>. Olhar porta a porta não basta.</li>
+    <li>Não confunda PSE com PD: <b>15,4 W é o que sai do switch, 12,95 W é o que chega</b>. Para dimensionar o switch, conte na PSE.</li>
+    <li>Total ≠ por porta: 370 W ÷ 30 W = <b>12 PDs Class 4</b> por classe, não 24.</li>
+    <li>Folga do curso: <b>switch com 120% do necessário</b>, e a carga não passa de 80% da capacidade.</li>
+    <li>Contar <b>portas</b> também é parte do cálculo (o exemplo do curso tem 16 portas).</li>
+    <li>Class 0 reserva 15,4 W. Class 4 é o teto do PoE+. Class 5 a 8 só existem no bt.</li>
+    <li>PoE não aumenta os 100 m. Feixe grande com PoE significa <b>calor</b>, e aí entram fabricante do cabo e ampacidade do NEC.</li>
+    <li>"Green"/EEE (Energy Efficient Ethernet, 802.3az) é economia de energia do link, coisa diferente de PoE. Desligar o EEE numa porta AV não desliga o PoE.</li>
+    <li>Números do curso × números da norma (24,5 × 25,5 W; 99/73 × 90/71,3 W): reconheça as duas versões.</li>
+  </ul>
+</div>
+
+<div class="box pratica">
+  <h2>🔧 Na prática</h2>
+  <ul>
+    <li>Monte uma <b>planilha de PoE por switch</b>: PD, Class, máximo do spec sheet, porta, prioridade. Some e compare com 80% do budget.</li>
+    <li>Leia no datasheet do switch o <b>budget total</b>, o máximo por porta, o <b>modo de alocação</b> (classe, LLDP ou real) e o efeito das fontes (redundante ou combinado).</li>
+    <li>Configure as <b>prioridades</b> (D3): microfones, DSP e câmeras em critical/high.</li>
+    <li>Na entrega (D4/E2), teste com <b>tudo ligado e no pico</b>: PTZ em movimento, áudio alto, todas as telas ativas. Leia o consumo por porta no switch.</li>
+    <li>Switch PoE no <b>UPS</b>, dimensionado com a carga PoE.</li>
+    <li>Feixes grandes: Cat6A, nada de CCA e feixes menores.</li>
+    <li>Documente no as-built (F1) o consumo por porta e o budget restante. A próxima pessoa a ligar mais um PD vai agradecer.</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>10. Questões de treino</h2>
+  <p class="note">Questões originais do NB ANP prep para treino. Não são questões oficiais da AVIXA. Enunciado em inglês, como na prova.</p>
+
+  <div class="q"><p class="stem">1. A 24-port PoE+ switch has a total PoE budget of 370 W and allocates power by class. How many Class 4 PDs can it power at the same time?</p>
+  <ol><li>24</li><li>14</li><li>12</li><li>16</li></ol>
+  <details><summary>Ver resposta</summary><p><b>c) 12.</b> Na alocação por classe, cada PD Class 4 reserva 30 W na PSE: 370 ÷ 30 = 12,3, então 12. A alternativa b) usa 25,5 W (o valor no PD) e erra o lado do cálculo. A a) confunde quantidade de portas com budget.</p>
+  <p class="siglas">Siglas: PoE = Power over Ethernet · PD = Powered Device · PSE = Power Sourcing Equipment</p></details></div>
+
+  <div class="q"><p class="stem">2. What is the maximum power guaranteed at the powered device for an IEEE 802.3af (Type 1) port?</p>
+  <ol><li>15.4 W</li><li>12.95 W</li><li>25.5 W</li><li>30 W</li></ol>
+  <details><summary>Ver resposta</summary><p><b>b) 12,95 W.</b> 15,4 W é o que sai da PSE. A diferença, 2,45 W, é a perda máxima no cabo de 100 m. 25,5 W e 30 W são os valores do 802.3at.</p>
+  <p class="siglas">Siglas: IEEE = Institute of Electrical and Electronics Engineers · PSE = Power Sourcing Equipment</p></details></div>
+
+  <div class="q"><p class="stem">3. The AV devices on a switch require a combined 250 W of PoE. The design rule is to specify a switch that can supply 120% of the required PoE load. What is the minimum PoE budget the switch should provide?</p>
+  <ol><li>250 W</li><li>275 W</li><li>300 W</li><li>370 W</li></ol>
+  <details><summary>Ver resposta</summary><p><b>c) 300 W.</b> Pela regra do curso, o switch entrega 120% do necessário: 250 × 1,2 = 300 W. A a) não tem folga nenhuma, a b) só tem 10% e a d) cabe, mas não é o mínimo. Cuidado: se o enunciado pedisse "load no more than 80% of the budget", a conta seria 250 ÷ 0,8 = 312,5 W. Leia qual regra a questão usa.</p>
+  <p class="siglas">Siglas: PoE = Power over Ethernet</p></details></div>
+
+  <div class="q"><p class="stem">4. An outdoor PTZ camera with a built-in heater needs 45 W at the device. Which is the minimum standard the switch port must support?</p>
+  <ol><li>IEEE 802.3af</li><li>IEEE 802.3at</li><li>IEEE 802.3bt Type 3</li><li>Passive 24 V PoE</li></ol>
+  <details><summary>Ver resposta</summary><p><b>c) 802.3bt Type 3.</b> 45 W no PD passa dos 25,5 W do at. O Type 3 chega a 51 W no PD (Class 6, 60 W na PSE). O PoE passivo não é padrão e não negocia potência.</p>
+  <p class="siglas">Siglas: PTZ = Pan-Tilt-Zoom · PD = Powered Device · PSE = Power Sourcing Equipment</p></details></div>
+
+  <div class="q"><p class="stem">5. After four PoE touch panels were added, several ceiling microphones lost power. Every port is PoE+ capable and all cables passed certification. What is the most likely cause?</p>
+  <ol><li>Cat6A cable loss over 100 m</li><li>The switch exceeded its total PoE budget and shed lower-priority ports</li><li>IGMP snooping was disabled</li><li>A VLAN mismatch on the microphone ports</li></ol>
+  <details><summary>Ver resposta</summary><p><b>b).</b> Os novos PDs passaram do budget total e o switch cortou as portas de menor prioridade, que eram as dos microfones. A correção é reorçar (B5), dar prioridade alta aos microfones (D3) ou aumentar o budget. IGMP e VLAN afetam o tráfego, não a energia. A perda no cabo já está prevista na norma.</p>
+  <p class="siglas">Siglas: IGMP = Internet Group Management Protocol · VLAN = Virtual LAN</p></details></div>
+</div>
+
+<div class="sec note">
+  <b>Fontes:</b> ECO ANP, tasks B5, B4, B3, D3, D4 e E2 (resumo em conhecimento/ANP_ECO_resumo.md) · curso ANP Exam Review, módulo Hardware and Software Components › Data Link Layer › Ethernet › <i>PoE</i> e <i>How to Calculate a PoE Budget</i> · complemento: IEEE 802.3af/at/bt, TIA TSB-184-A e prática de mercado.<br>
+  Siglas da lição: AWG = American Wire Gauge · CCA = Copper-Clad Aluminum · DSP = Digital Signal Processor · ECO = Exam Content Outline · EEE = Energy Efficient Ethernet · LLDP = Link Layer Discovery Protocol · MPS = Maintain Power Signature · NEC = National Electrical Code · PD = Powered Device · PSE = Power Sourcing Equipment · PTZ = Pan-Tilt-Zoom · TIA = Telecommunications Industry Association · TLV = Type-Length-Value · UPS = Uninterruptible Power Supply
+</div>
+</div>
+
+<!-- ====================================================== ES ====================================================== -->
+<div data-l="es" lang="es">
+
+<div class="sec hero">
+  <span class="chip">Dominio B · Task B5</span><span class="chip">+ B4 · B3 · D3 · D4 · E2</span>
+  <h2>PoE (Power over Ethernet) y PoE budget</h2>
+  <p class="sub">Lección del 18/11/2026 · <span class="tag avixa">AVIXA</span> = viene del ECO o del curso ANP Exam Review · <span class="tag">complemento</span> = viene de fuera de los documentos AVIXA (norma IEEE, práctica del mercado)</p>
+  <h3>En 30 segundos</h3>
+  <ul>
+    <li>PoE lleva energía DC y datos por el mismo cable de par trenzado, hasta los mismos 100 m. Quien entrega es la <b>PSE</b> (Power Sourcing Equipment: switch o injector). Quien consume es el <b>PD</b> (Powered Device: cámara, micrófono, decoder…).</li>
+    <li>Los números que más se preguntan: <b>15,4 / 30 / 60 / 90 W en la PSE</b> y <b>12,95 / 25,5 / 51 / 71,3 W en el PD</b>. La diferencia entre ambos es la pérdida en el cable.</li>
+    <li>El budget tiene <b>dos límites</b>: el de cada puerto y el total del switch. Los dos deben cerrar, con el margen del curso: el switch debe entregar el <b>120%</b> de lo necesario. El curso también dice no pasar del <b>80%</b> de la capacidad, que es un poco más conservador (1 ÷ 0,8 = 125%).</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>1. Dónde aparece PoE en el ECO</h2>
+  <div class="tblw"><table>
+    <tr><th>Task</th><th>Lo que dice el ECO</th><th>Relación con PoE</th></tr>
+    <tr><td><b>B5</b> (3 ítems)</td><td>Verify Power over Ethernet (PoE) class is budgeted correctly</td><td>Es la task de PoE: clase de cada PD, suma, budget del switch. <span class="tag avixa">AVIXA</span></td></tr>
+    <tr><td><b>B4</b> (3)</td><td>Environmental (noise, BTU, location, space) and power (amperage, voltage, grounding) needs</td><td>El curso pone aquí el calentamiento de los mazos de cable con PoE y las tablas de ampacidad del NEC (National Electrical Code). <span class="tag avixa">AVIXA</span></td></tr>
+    <tr><td><b>B3</b> (3)</td><td>Switch and distribution architecture meets bandwidth needs (cabling, stacking, transceivers, port count…)</td><td>El ejemplo del curso cuenta vatios <b>y</b> puertos (16 puertos). Nuestra lectura del ECO.</td></tr>
+    <tr><td><b>D3</b> (3)</td><td>Deploy switches, routers and other network devices (power on, firmware, configure, cable management)</td><td>Configurar PoE en el switch: prioridad de puertos, modo de asignación, LLDP. Nuestra lectura del ECO.</td></tr>
+    <tr><td><b>D4</b> (3)</td><td>Deploy AV end-point devices (power on, firmware, configure)</td><td>Encender los PD y comprobar que cada uno recibió la clase correcta. Nuestra lectura del ECO.</td></tr>
+    <tr><td><b>E2</b> (4)</td><td>Verify system stability over time and load conditions</td><td>Probar con todo encendido y en el pico (PTZ girando, altavoz a volumen alto). Nuestra lectura del ECO.</td></tr>
+  </table></div>
+  <p class="note">En el CTS-D JTA, que es otra certificación, aparece "ability to calculate bandwidth and PoE requirements". Sirve solo como refuerzo. <span class="tag">complemento</span></p>
+</div>
+
+<div class="box memo">
+  <h2>🧠 Trucos de memoria</h2>
+  <ul>
+    <li><b>"15 – 30 – 60 – 90"</b> en la PSE: dobla, dobla, suma 30.</li>
+    <li><b>"13 – 25 – 51 – 71"</b> en el PD (12,95 se redondea a 13). Piénsalo como la clave de un candado.</li>
+    <li><b>af → at → bt</b> sigue el alfabeto y la cronología: 2003, 2009, 2018. Y los Types cuentan las generaciones: <b>Type 1 = af, Type 2 = at, Types 3 y 4 = bt</b>.</li>
+    <li><b>"3 – 4 – 8"</b>: af llega a la Class 3, at a la Class 4 y bt a la Class 8.</li>
+    <li><b>PSE Supplies, PD Drinks</b>: la PSE sirve y el PD bebe.</li>
+    <li><b>"Detecta, Clasifica, Enciende"</b>: es el orden en que la PSE decide dar energía.</li>
+    <li><b>Regla 120/80</b> del curso: el switch necesita el 120% de lo calculado, y la carga no debe pasar del 80% del budget. Si la pregunta dice cuál usar, usa esa. Si quieres la más segura, usa la del 80%.</li>
+    <li><b>Pérdida = I²R</b>: 0,35 A² × 20 Ω = <b>2,45 W</b> = 15,4 − 12,95. Y 0,6 A² × 12,5 Ω = <b>4,5 W</b> = 30 − 25,5. La diferencia entre PSE y PD es exactamente la pérdida en el peor cable de 100 m.</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>2. Las normas IEEE 802.3</h2>
+  <p>PoE es una familia de normas IEEE bajo el paraguas 802.3, desde 2003. Lleva energía junto con los datos en un cable de 4 pares trenzados. <span class="tag avixa">AVIXA</span></p>
+  <div class="tblw"><table>
+    <tr><th>Norma</th><th>Type</th><th>Apodo</th><th>Pares</th><th>Clases</th><th class="n">PSE</th><th class="n">PD</th><th class="n">Corriente</th></tr>
+    <tr><td>802.3af (2003)</td><td>1</td><td>PoE</td><td>2</td><td>0–3</td><td class="n">15,4 W</td><td class="n">12,95 W</td><td class="n">350 mA</td></tr>
+    <tr><td>802.3at (2009)</td><td>2</td><td>PoE+</td><td>2</td><td>0–4</td><td class="n">30 W</td><td class="n">25,5 W</td><td class="n">600 mA</td></tr>
+    <tr><td>802.3bt (2018)</td><td>3</td><td>PoE++ / 4PPoE</td><td>2 o 4</td><td>0–6</td><td class="n">60 W</td><td class="n">51 W</td><td class="n">600 mA/par</td></tr>
+    <tr><td>802.3bt (2018)</td><td>4</td><td>PoE++ / 4PPoE</td><td>4</td><td>7–8</td><td class="n">90 W</td><td class="n">71,3 W</td><td class="n">~960 mA/par</td></tr>
+  </table></div>
+  <p class="note">⚠️ La tabla del curso trae <b>24,5 W</b> en el PD para el Type 2 y <b>99 W / 73 W</b> para el Type 4. La norma IEEE publica <b>25,5 W</b> y <b>90 W / 71,3 W</b>, que son los números que usamos aquí. Si el examen trae 99 W o 73 W, es la versión del curso para el Type 4. Tensión en la PSE: 44–57 V DC (af), 50–57 V (at y bt Type 3), 52–57 V (bt Type 4). <span class="tag avixa">curso</span> <span class="tag">complemento IEEE</span></p>
+
+  <h3>Clases 0 a 8</h3>
+  <p>La clase es la "etiqueta de consumo" que anuncia el PD. Es lo que la task B5 manda presupuestar. <span class="tag">complemento (valores IEEE)</span></p>
+  <div class="tblw"><table>
+    <tr><th>Class</th><th class="n">Reserva en la PSE</th><th class="n">Máximo en el PD</th><th>Type mínimo</th></tr>
+    <tr><td>0 (por defecto, sin clase)</td><td class="n">15,4 W</td><td class="n">12,95 W</td><td>1 (af)</td></tr>
+    <tr><td>1</td><td class="n">4,0 W</td><td class="n">3,84 W</td><td>1 (af)</td></tr>
+    <tr><td>2</td><td class="n">7,0 W</td><td class="n">6,49 W</td><td>1 (af)</td></tr>
+    <tr><td>3</td><td class="n">15,4 W</td><td class="n">12,95 W</td><td>1 (af)</td></tr>
+    <tr><td>4</td><td class="n">30 W</td><td class="n">25,5 W</td><td>2 (at)</td></tr>
+    <tr><td>5</td><td class="n">45 W</td><td class="n">40 W</td><td>3 (bt, 4 pares)</td></tr>
+    <tr><td>6</td><td class="n">60 W</td><td class="n">51 W</td><td>3 (bt, 4 pares)</td></tr>
+    <tr><td>7</td><td class="n">75 W</td><td class="n">62 W</td><td>4 (bt)</td></tr>
+    <tr><td>8</td><td class="n">90 W</td><td class="n">71,3 W</td><td>4 (bt)</td></tr>
+  </table></div>
+  <p class="note">Trampa clásica: la <b>Class 0</b> reserva los mismos 15,4 W que la Class 3. Un PD que no se clasifica sale caro en el budget por clase.</p>
+</div>
+
+<div class="sec">
+  <h2>3. Quién es quién: PSE, PD, endspan, midspan, modos</h2>
+  <ul>
+    <li><b>PSE (Power Sourcing Equipment)</b> entrega la energía. La norma también define la señalización entre PSE y PD, que sirve para detectar el equipo correcto en ambos extremos y negociar cuánta energía entregar. <span class="tag avixa">AVIXA</span></li>
+    <li><b>PD (Powered Device)</b> recibe la energía: cámara, micrófono de techo, encoder, touch panel, etc.</li>
+    <li><b>Endspan</b> es el propio switch PoE, donde la energía ya sale del puerto. <b>Midspan</b> es el injector (o panel de injectors) entre un switch sin PoE y el PD. El curso habla de "switch/midspan" en el cálculo del budget, así que el midspan tiene budget propio. Debe acompañar la velocidad del enlace: un midspan de 100 Mb/s en un enlace gigabit baja la velocidad. <span class="tag">complemento</span></li>
+    <li><b>Tres formas de llevar la energía</b>, según el curso: (1) en los 2 pares que también llevan datos, (2) en los 2 pares libres, (3) <b>4PPoE</b>, en los 4 pares, que también llevan datos. En Cat6 a 1 Gb/s los 4 pares llevan datos. El curso llama a la opción de 4 pares "Mode C" y dice que es la más común en los switches actuales. <span class="tag avixa">AVIXA</span></li>
+    <li>En la norma IEEE los nombres son <b>Alternative A</b> (pares 1-2 y 3-6, "Mode A") y <b>Alternative B</b> (pares 4-5 y 7-8, "Mode B"). Cuatro pares es usar A y B juntos. Un PD af/at debe aceptar A <b>y</b> B, porque no sabe cuál usará la PSE. <span class="tag">complemento</span></li>
+    <li>Con 4 pares la corriente se reparte: para la misma potencia, cada par se calienta menos. Esto cuenta para el calor en los mazos (sección 5). <span class="tag">complemento</span></li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>4. Cómo decide la PSE encender: "Detecta, Clasifica, Enciende"</h2>
+  <ol>
+    <li><b>Detección</b>: la PSE aplica una tensión baja (2,7–10,1 V) y busca la "firma" de 25 kΩ del PD. Sin firma no hay energía. Esto evita que el PoE estándar queme una notebook conectada al puerto. <span class="tag">complemento</span></li>
+    <li><b>Clasificación</b>: con 15,5–20,5 V, la PSE mide la corriente de clase y descubre la Class del PD. Desde at, la clasificación tiene varios "toques" (multi-event classification), para que el PD sepa que está en una PSE de alta potencia. <span class="tag">complemento</span></li>
+    <li><b>Enciende</b> (power-up) y <b>mantiene</b>: el PD debe consumir un mínimo (MPS, Maintain Power Signature). Si desaparece, la PSE corta la energía del puerto. <span class="tag">complemento</span></li>
+    <li><b>LLDP (Link Layer Discovery Protocol)</b>: con el enlace de datos activo, PD y PSE pueden renegociar la potencia en pasos de 0,1 W (el TLV "Power via MDI"; en teléfonos IP aparece como LLDP-MED, LLDP Media Endpoint Discovery). Así el switch reserva lo que el PD <b>pide</b>, no el máximo de la clase. Un PD Class 4 que pide 14 W por LLDP libera 16 W para los demás. <span class="tag">complemento</span></li>
+  </ol>
+  <p class="note">El curso lo resume en una frase: la señalización PSE/PD permite detectar el equipo correcto y negociar la potencia. <span class="tag avixa">AVIXA</span></p>
+</div>
+
+<div class="sec">
+  <h2>5. Cable, pérdida y calor</h2>
+  <ul>
+    <li><b>El límite sigue siendo 100 m.</b> PoE no aumenta la distancia (los extensores PoE son otro equipo en el medio).</li>
+    <li><b>Por qué la PSE entrega más de lo que recibe el PD:</b> la resistencia del cable convierte parte de la potencia en calor. La norma prevé el peor caso, con 100 m y resistencia de lazo de 20 Ω (af) o 12,5 Ω (at). El curso da la pérdida máxima en el cable: <b>2,45 W</b> (af), <b>4,5 W</b> (at), <b>9 W</b> (bt Type 3) y 8–25 W (bt Type 4, en los números del curso). <span class="tag avixa">AVIXA</span></li>
+    <li><b>Mazos (bundles):</b> en instalaciones grandes, considera el calentamiento de los mazos y la calidad del cable, y consulta al fabricante del cable y las tablas de ampacidad del NEC. <span class="tag avixa">AVIXA</span></li>
+    <li>El porqué: los cables del centro de un mazo grande no disipan calor. Cuando sube la temperatura, sube la resistencia, aumenta la pérdida y el cable puede superar su temperatura nominal. La guía del mercado (TIA TSB-184-A) es preferir Cat6A (conductor 23 AWG, más grueso), hacer mazos más pequeños y sueltos y <b>evitar el CCA</b> (Copper-Clad Aluminum, aluminio recubierto de cobre), que se calienta más y ni siquiera es cable de categoría de verdad. <span class="tag">complemento</span></li>
+    <li>Desconectar un patch cord con carga alta produce un pequeño arco en los contactos. En PoE de alta potencia, usa conectores y patch cords de calidad. <span class="tag">complemento</span></li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>6. PoE budget: el cálculo</h2>
+  <h3>Dos límites, siempre</h3>
+  <ul>
+    <li><b>Por puerto:</b> el puerto debe soportar el Type y la Class del PD. Un puerto PoE+ (30 W) no enciende una cámara Class 6, por mucho budget que le sobre al switch.</li>
+    <li><b>Total:</b> es la suma que aguanta la fuente del switch. "370 W en 24 puertos" no quiere decir 30 W en cada puerto: da un promedio de <b>15,4 W</b> por puerto.</li>
+  </ul>
+  <h3>El paso a paso del curso <span class="tag avixa">AVIXA</span></h3>
+  <ol>
+    <li>Busca el consumo de cada equipo en el spec sheet o en la caja. Si viene en voltios y amperios, P = V × I.</li>
+    <li>Suma todo: ese es tu PoE budget.</li>
+    <li>Cuenta los puertos.</li>
+    <li>Especifica un switch (o midspan) con puertos suficientes y capaz de entregar el <b>120%</b> del budget, para operar con seguridad. En la introducción del mismo tema, el curso dice que la carga no pase del 80% de la capacidad del switch/midspan.</li>
+  </ol>
+  <p>El ejemplo del curso: decoder 48 V × 140 mA = 6,72 W y encoder 48 V × 185 mA = 8,88 W. Con 4 encoders (35,5 W) y 12 decoders (80,6 W), el total es <b>116,1 W</b> en <b>16 puertos</b>. Con el margen del 20%, el switch necesita ≥ <b>139,3 W</b> de budget y ≥ 16 puertos PoE.</p>
+  <h3>Cómo reserva el switch la energía <span class="tag">complemento</span></h3>
+  <div class="tblw"><table>
+    <tr><th>Modo</th><th>Qué reserva</th><th>Efecto</th></tr>
+    <tr><td><b>Por clase</b> (class-based / static)</td><td>El máximo de la clase en la PSE (Class 3 = 15,4 W, aunque el PD use 7 W)</td><td>Más seguro y más "caro": caben menos PD</td></tr>
+    <tr><td><b>Por LLDP</b></td><td>Lo que el PD pide por LLDP</td><td>Término medio preciso, si el PD y el switch lo soportan</td></tr>
+    <tr><td><b>Por consumo real</b> (usage-based / dynamic)</td><td>Lo que el switch mide ahora</td><td>Cabe más, pero un pico (PTZ girando, calefactor encendiendo, volumen alto) puede desbordar</td></tr>
+  </table></div>
+  <p>Para el proyecto, suma por el máximo del spec sheet (método del curso) o, más conservador, por el máximo de la clase. El consumo medido sirve para verificar, no para diseñar.</p>
+  <h3>Prioridad de puertos y desborde del budget <span class="tag">complemento</span></h3>
+  <ul>
+    <li>Cuando la demanda supera el budget, el switch niega energía al puerto nuevo o <b>apaga los de menor prioridad</b> (critical > high > low). En empate, muchos fabricantes sacrifican el puerto de número más alto. Esto varía, así que revisa el manual.</li>
+    <li>Síntomas: PD que no enciende, PD que se reinicia en bucle, o un PD que se cae cuando otro consume más. En el log aparece algo como "power denied" o "budget exceeded".</li>
+    <li>Pon en prioridad alta lo que tumba la sala: micrófonos, DSP, cámaras de la sala principal. Señalización, teléfonos de pasillo y AP (access points) de áreas comunes van en prioridad baja.</li>
+  </ul>
+  <h3>Fuente redundante y UPS <span class="tag">complemento</span></h3>
+  <ul>
+    <li>Con dos fuentes, muchos switches tienen dos modos. En el <b>redundante</b> (N+1), el budget es el de una sola fuente. En el <b>combinado</b> (load-sharing), el budget es la suma de las dos, pero sin redundancia. Si una fuente cae en modo combinado, el budget baja a la mitad y los puertos de baja prioridad se apagan.</li>
+    <li>Los PD caen junto con el switch. El switch PoE va en el <b>UPS</b> (Uninterruptible Power Supply), y el UPS se dimensiona con la carga PoE incluida, ya que aparece en el consumo AC del switch, sumada a las pérdidas de la fuente. Esto se relaciona con B4 (power needs) y D1 (site readiness: energía).</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>7. PoE pasivo y no estándar <span class="tag">complemento</span></h2>
+  <ul>
+    <li>El <b>PoE pasivo</b> (24 V o 48 V "siempre encendido") no tiene detección ni clasificación. La tensión está siempre en el puerto y puede dañar un equipo común. Tampoco negocia ni entra en el budget por clase o LLDP.</li>
+    <li>Hay soluciones propietarias anteriores al bt, como los 60 W de Cisco UPOE (Universal PoE). El PoH (Power over HDBaseT) es otra familia, usada en extensores HDBaseT. No confundas ninguna de ellas con el 802.3bt.</li>
+    <li>En el examen y en el proyecto, la respuesta segura es el <b>estándar IEEE 802.3af/at/bt</b>, con PSE y PD dialogando.</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>8. PoE en el mundo AV <span class="tag">complemento: valores típicos; manda siempre el spec sheet</span></h2>
+  <div class="tblw"><table>
+    <tr><th>Equipo</th><th>Rango típico</th><th>Atención</th></tr>
+    <tr><td>Cámara PTZ indoor</td><td>PoE+ (Class 4), 15–25 W</td><td>Los motores generan picos. Algunas piden bt.</td></tr>
+    <tr><td>Cámara PTZ outdoor con calefactor</td><td>802.3bt (Class 6 o más)</td><td>Exige puerto bt. Un PoE+ no alcanza.</td></tr>
+    <tr><td>Micrófono de techo (array)</td><td>af o at, 5–13 W</td><td>Prioridad alta: sin él, se acaba la reunión.</td></tr>
+    <tr><td>Encoder/decoder AV-over-IP</td><td>6–13 W (curso: 8,88 y 6,72 W)</td><td>Los modelos 4K/10G suelen pedir PoE+ o fuente local.</td></tr>
+    <tr><td>Touch panel</td><td>af o at, 8–20 W</td><td>Las pantallas más grandes consumen más.</td></tr>
+    <tr><td>DSP / interfaz de audio en red con PoE</td><td>af o at, 5–15 W</td><td>Centro del sistema: prioridad critical.</td></tr>
+    <tr><td>Altavoz PoE</td><td>PoE+ o bt</td><td>Volumen alto y graves son los picos. Diseña por el máximo.</td></tr>
+    <tr><td>Display o señalización PoE</td><td>bt Type 4</td><td>Un puerto de 90 W por pantalla.</td></tr>
+  </table></div>
+</div>
+
+<div class="sec">
+  <h2>9. Ejercicio resuelto</h2>
+  <p><b>Escenario:</b> una sala de capacitación conectada a <b>un switch de 24 puertos, todos PoE+</b>, con <b>370 W</b> de PoE budget. Valores tomados del spec sheet de cada PD (ficticios, solo para el ejercicio):</p>
+  <div class="tblw"><table>
+    <tr><th>Equipo</th><th class="n">Cant.</th><th>Class</th><th class="n">Spec (máx.)</th><th class="n">Suma spec</th><th class="n">Reserva por clase</th></tr>
+    <tr><td>Cámara PTZ</td><td class="n">2</td><td>4</td><td class="n">24 W</td><td class="n">48,0 W</td><td class="n">2 × 30 = 60,0 W</td></tr>
+    <tr><td>Micrófono de techo</td><td class="n">4</td><td>3</td><td class="n">10 W</td><td class="n">40,0 W</td><td class="n">4 × 15,4 = 61,6 W</td></tr>
+    <tr><td>Encoder AV-over-IP</td><td class="n">4</td><td>3</td><td class="n">8,9 W</td><td class="n">35,6 W</td><td class="n">4 × 15,4 = 61,6 W</td></tr>
+    <tr><td>Decoder AV-over-IP</td><td class="n">8</td><td>3</td><td class="n">6,7 W</td><td class="n">53,6 W</td><td class="n">8 × 15,4 = 123,2 W</td></tr>
+    <tr><td>Touch panel</td><td class="n">2</td><td>4</td><td class="n">18 W</td><td class="n">36,0 W</td><td class="n">2 × 30 = 60,0 W</td></tr>
+    <tr><td>Altavoz PoE</td><td class="n">2</td><td>4</td><td class="n">25,5 W</td><td class="n">51,0 W</td><td class="n">2 × 30 = 60,0 W</td></tr>
+    <tr class="tot"><td>Total</td><td class="n">22</td><td></td><td></td><td class="n">264,2 W</td><td class="n">426,4 W</td></tr>
+  </table></div>
+  <ol>
+    <li><b>Puertos:</b> 22 ≤ 24 <span class="ok">✓</span></li>
+    <li><b>Por puerto:</b> ningún PD supera la Class 4, así que todos los puertos PoE+ sirven <span class="ok">✓</span></li>
+    <li><b>Total por el método del curso:</b> 264,2 W × 1,2 = <b>317,0 W ≤ 370 W</b> <span class="ok">✓</span>. La carga queda en 264,2 / 370 = <b>71%</b> del budget, por debajo del 80%.</li>
+    <li><b>Pero, si el switch reserva por clase:</b> 426,4 W &gt; 370 W <span class="bad">✗</span>. Faltan 56,4 W. El switch enciende puertos hasta agotar la reserva, y los últimos (o los de menor prioridad) quedan sin energía. Serían unos 4 PD Class 3 apagados, por ejemplo decoders.</li>
+  </ol>
+  <p><b>Veredicto:</b> <span class="ok">cabe</span>, siempre que el switch use asignación por LLDP o por consumo real y tenga las prioridades configuradas. Si el switch solo asigna por clase, <span class="bad">no cabe</span>. Entonces las salidas son un switch de 740 W, dividir los PD en dos switches o un midspan para parte de ellos.</p>
+  <p><b>Variante de examen:</b> si se cambian las 2 PTZ por modelos outdoor Class 6 (51 W), el total por spec sube a 318,2 W (× 1,2 = 381,8 W, que ya supera los 370 W), pero el error más grave viene antes: <b>un puerto PoE+ no entrega Class 6</b>. Falla el límite por puerto antes que el total.</p>
+</div>
+
+<div class="box prova">
+  <h2>🎯 Para el examen</h2>
+  <ul>
+    <li>Al leer "budgeted correctly" (B5), piensa en <b>sumar la clase o el consumo de todos los PD y compararlo con el budget total de la PSE</b>. Mirar puerto por puerto no basta.</li>
+    <li>No confundas PSE con PD: <b>15,4 W es lo que sale del switch, 12,95 W es lo que llega</b>. Para dimensionar el switch, cuenta en la PSE.</li>
+    <li>Total ≠ por puerto: 370 W ÷ 30 W = <b>12 PD Class 4</b> por clase, no 24.</li>
+    <li>Margen del curso: <b>switch con el 120% de lo necesario</b>, y la carga no pasa del 80% de la capacidad.</li>
+    <li>Contar <b>puertos</b> también es parte del cálculo (el ejemplo del curso tiene 16 puertos).</li>
+    <li>Class 0 reserva 15,4 W. Class 4 es el techo de PoE+. Class 5 a 8 solo existen en bt.</li>
+    <li>PoE no aumenta los 100 m. Un mazo grande con PoE significa <b>calor</b>, y ahí entran el fabricante del cable y la ampacidad del NEC.</li>
+    <li>"Green"/EEE (Energy Efficient Ethernet, 802.3az) es ahorro de energía del enlace, algo distinto de PoE. Desactivar EEE en un puerto AV no apaga el PoE.</li>
+    <li>Números del curso × números de la norma (24,5 × 25,5 W; 99/73 × 90/71,3 W): reconoce las dos versiones.</li>
+  </ul>
+</div>
+
+<div class="box pratica">
+  <h2>🔧 En la práctica</h2>
+  <ul>
+    <li>Arma una <b>planilla de PoE por switch</b>: PD, Class, máximo del spec sheet, puerto, prioridad. Suma y compara con el 80% del budget.</li>
+    <li>Lee en el datasheet del switch el <b>budget total</b>, el máximo por puerto, el <b>modo de asignación</b> (clase, LLDP o real) y el efecto de las fuentes (redundante o combinado).</li>
+    <li>Configura las <b>prioridades</b> (D3): micrófonos, DSP y cámaras en critical/high.</li>
+    <li>En la entrega (D4/E2), prueba con <b>todo encendido y en el pico</b>: PTZ en movimiento, audio alto, todas las pantallas activas. Lee el consumo por puerto en el switch.</li>
+    <li>Switch PoE en el <b>UPS</b>, dimensionado con la carga PoE.</li>
+    <li>Mazos grandes: Cat6A, nada de CCA y mazos más pequeños.</li>
+    <li>Documenta en el as-built (F1) el consumo por puerto y el budget restante. La próxima persona que conecte otro PD lo agradecerá.</li>
+  </ul>
+</div>
+
+<div class="sec">
+  <h2>10. Preguntas de práctica</h2>
+  <p class="note">Preguntas originales de NB ANP prep para práctica. No son preguntas oficiales de AVIXA. Enunciado en inglés, como en el examen.</p>
+
+  <div class="q"><p class="stem">1. A 24-port PoE+ switch has a total PoE budget of 370 W and allocates power by class. How many Class 4 PDs can it power at the same time?</p>
+  <ol><li>24</li><li>14</li><li>12</li><li>16</li></ol>
+  <details><summary>Ver respuesta</summary><p><b>c) 12.</b> En la asignación por clase, cada PD Class 4 reserva 30 W en la PSE: 370 ÷ 30 = 12,3, o sea 12. La opción b) usa 25,5 W (el valor en el PD) y se equivoca de lado. La a) confunde cantidad de puertos con budget.</p>
+  <p class="siglas">Siglas: PoE = Power over Ethernet · PD = Powered Device · PSE = Power Sourcing Equipment</p></details></div>
+
+  <div class="q"><p class="stem">2. What is the maximum power guaranteed at the powered device for an IEEE 802.3af (Type 1) port?</p>
+  <ol><li>15.4 W</li><li>12.95 W</li><li>25.5 W</li><li>30 W</li></ol>
+  <details><summary>Ver respuesta</summary><p><b>b) 12,95 W.</b> 15,4 W es lo que sale de la PSE. La diferencia, 2,45 W, es la pérdida máxima en el cable de 100 m. 25,5 W y 30 W son los valores del 802.3at.</p>
+  <p class="siglas">Siglas: IEEE = Institute of Electrical and Electronics Engineers · PSE = Power Sourcing Equipment</p></details></div>
+
+  <div class="q"><p class="stem">3. The AV devices on a switch require a combined 250 W of PoE. The design rule is to specify a switch that can supply 120% of the required PoE load. What is the minimum PoE budget the switch should provide?</p>
+  <ol><li>250 W</li><li>275 W</li><li>300 W</li><li>370 W</li></ol>
+  <details><summary>Ver respuesta</summary><p><b>c) 300 W.</b> Por la regla del curso, el switch entrega el 120% de lo necesario: 250 × 1,2 = 300 W. La a) no tiene margen, la b) solo el 10% y la d) alcanza, pero no es el mínimo. Ojo: si el enunciado pidiera "load no more than 80% of the budget", la cuenta sería 250 ÷ 0,8 = 312,5 W. Lee qué regla usa la pregunta.</p>
+  <p class="siglas">Siglas: PoE = Power over Ethernet</p></details></div>
+
+  <div class="q"><p class="stem">4. An outdoor PTZ camera with a built-in heater needs 45 W at the device. Which is the minimum standard the switch port must support?</p>
+  <ol><li>IEEE 802.3af</li><li>IEEE 802.3at</li><li>IEEE 802.3bt Type 3</li><li>Passive 24 V PoE</li></ol>
+  <details><summary>Ver respuesta</summary><p><b>c) 802.3bt Type 3.</b> 45 W en el PD supera los 25,5 W del at. El Type 3 llega a 51 W en el PD (Class 6, 60 W en la PSE). El PoE pasivo no es estándar y no negocia potencia.</p>
+  <p class="siglas">Siglas: PTZ = Pan-Tilt-Zoom · PD = Powered Device · PSE = Power Sourcing Equipment</p></details></div>
+
+  <div class="q"><p class="stem">5. After four PoE touch panels were added, several ceiling microphones lost power. Every port is PoE+ capable and all cables passed certification. What is the most likely cause?</p>
+  <ol><li>Cat6A cable loss over 100 m</li><li>The switch exceeded its total PoE budget and shed lower-priority ports</li><li>IGMP snooping was disabled</li><li>A VLAN mismatch on the microphone ports</li></ol>
+  <details><summary>Ver respuesta</summary><p><b>b).</b> Los nuevos PD superaron el budget total y el switch cortó los puertos de menor prioridad, que eran los de los micrófonos. La corrección es volver a presupuestar (B5), dar prioridad alta a los micrófonos (D3) o aumentar el budget. IGMP y VLAN afectan el tráfico, no la energía. La pérdida en el cable ya está prevista en la norma.</p>
+  <p class="siglas">Siglas: IGMP = Internet Group Management Protocol · VLAN = Virtual LAN</p></details></div>
+</div>
+
+<div class="sec note">
+  <b>Fuentes:</b> ECO ANP, tasks B5, B4, B3, D3, D4 y E2 · curso ANP Exam Review, módulo Hardware and Software Components › Data Link Layer › Ethernet › <i>PoE</i> y <i>How to Calculate a PoE Budget</i> · complemento: IEEE 802.3af/at/bt, TIA TSB-184-A y práctica del mercado.<br>
+  Siglas de la lección: AWG = American Wire Gauge · CCA = Copper-Clad Aluminum · DSP = Digital Signal Processor · ECO = Exam Content Outline · EEE = Energy Efficient Ethernet · LLDP = Link Layer Discovery Protocol · MPS = Maintain Power Signature · NEC = National Electrical Code · PD = Powered Device · PSE = Power Sourcing Equipment · PTZ = Pan-Tilt-Zoom · TIA = Telecommunications Industry Association · TLV = Type-Length-Value · UPS = Uninterruptible Power Supply
+</div>
+</div>
+
+<footer>NB ANP prep · <span data-l="pt">questões originais de treino (não oficiais da AVIXA)</span><span data-l="es">preguntas originales de práctica (no oficiales de AVIXA)</span> · <a href="./"><span data-l="pt">menu de lições</span><span data-l="es">menú de lecciones</span></a> · <a href="../"><span data-l="pt">cards</span><span data-l="es">tarjetas</span></a></footer>
+</div>
+</body>
+</html>

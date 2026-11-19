@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="author" content="NB ANP prep">
+<title>NB ANP prep · lições</title>
+<link rel="stylesheet" href="estilo.css">
+<script src="lang.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span data-l="pt">Lições ANP</span><span data-l="es">Lecciones ANP</span></h1>
+    <nav class="nav"><a href="../"><span data-l="pt">🃏 Cards de hoje</span><span data-l="es">🃏 Tarjetas de hoy</span></a></nav>
+  </header>
+  <p class="sub" data-l="pt">Lições de estudo para o exame AVIXA ANP (Audiovisual Network Professional), ligadas às tasks do ECO (Exam Content Outline).</p>
+  <p class="sub" data-l="es">Lecciones de estudio para el examen AVIXA ANP (Audiovisual Network Professional), vinculadas a las tasks del ECO (Exam Content Outline).</p>
+  <div class="list" id="lista">
+    <noscript><a href="poe.html"><h2>PoE e PoE budget</h2><p>B5 · B4 · B3 · D3 · D4 · E2</p></a></noscript>
+  </div>
+  <footer>NB ANP prep · <span data-l="pt">questões originais de treino (não oficiais da AVIXA)</span><span data-l="es">preguntas originales de práctica (no oficiales de AVIXA)</span> · <a href="#" onclick="anpTrocarIdioma(event)"><span data-l="pt">🌐 Español</span><span data-l="es">🌐 Português</span></a></footer>
+</div>
+<script>
+(function(){
+  var L = window.ANP_LANG || 'pt', box = document.getElementById('lista');
+  function el(t, c, x){ var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+  function fmt(iso){ var p = (iso || '').split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : ''; }
+  fetch('licoes.json', {cache: 'no-cache'}).then(function(r){ return r.json(); }).then(function(lst){
+    lst.slice().sort(function(a, b){ return (b.data || '').localeCompare(a.data || ''); }).forEach(function(l){
+      var a = el('a'); a.href = l.arquivo;
+      a.appendChild(el('h2', null, (l.titulo && (l.titulo[L] || l.titulo.pt)) || l.slug));
+      a.appendChild(el('p', null, (l.resumo && (l.resumo[L] || l.resumo.pt)) || ''));
+      var m = el('div'); (l.tasks || []).forEach(function(t){ m.appendChild(el('span', 'chip', t)); });
+      if (l.data) m.appendChild(el('span', 'note', ' ' + fmt(l.data)));
+      a.appendChild(m); box.appendChild(a);
+    });
+  }).catch(function(){
+    box.innerHTML = '<a href="poe.html"><h2>PoE e PoE budget</h2><p>B5 · B4 · B3 · D3 · D4 · E2</p></a>';
+  });
+})();
+</script>
+</body>
+</html>

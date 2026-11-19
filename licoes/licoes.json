@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "poe",
+    "arquivo": "poe.html",
+    "data": "2026-11-18",
+    "tasks": ["B5", "B4", "B3", "D3", "D4", "E2"],
+    "titulo": {"pt": "PoE e PoE budget", "es": "PoE y PoE budget"},
+    "resumo": {
+      "pt": "Normas IEEE 802.3af/at/bt, classes 0–8, PSE × PD, perda no cabo, budget do switch, prioridade de portas e um exercício resolvido com equipamentos AV.",
+      "es": "Normas IEEE 802.3af/at/bt, clases 0–8, PSE × PD, pérdida en el cable, budget del switch, prioridad de puertos y un ejercicio resuelto con equipos AV."
+    }
+  }
+]
